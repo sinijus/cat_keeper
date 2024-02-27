@@ -1,6 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view_general"
+    style="@style/Card"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/image_view_card_icon"
+            style="@style/Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:src="@drawable/ic_general_info_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/descr_item_card_icon" />
+
+        <TextView
+            android:id="@+id/text_view_card_heading"
+            style="@style/Text.Heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            tools:text="General"
+            app:layout_constraintStart_toEndOf="@id/image_view_card_icon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_field_one_name"
+            style="@style/Text.ItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Official Name"
+            app:layout_constraintStart_toStartOf="@id/text_view_card_heading"
+            app:layout_constraintTop_toBottomOf="@id/text_view_card_heading" />
+
+        <TextView
+            android:id="@+id/text_view_field_one_value"
+            style="@style/Text.Value"
+            tools:text="cat's official name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_view_field_one_name"
+            app:layout_constraintTop_toTopOf="@id/text_view_field_one_name" />
+
+        <TextView
+            android:id="@+id/text_view_field_two_name"
+            style="@style/Text.ItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Birth Date"
+            app:layout_constraintStart_toStartOf="@id/text_view_field_one_name"
+            app:layout_constraintTop_toBottomOf="@id/text_view_field_one_name" />
+
+        <TextView
+            android:id="@+id/text_view_field_two_value"
+            style="@style/Text.Value"
+            tools:text="11th October 2022"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/text_view_field_one_value"
+            app:layout_constraintTop_toBottomOf="@id/text_view_field_one_value" />
+
+        <TextView
+            android:id="@+id/text_view_field_three_name"
+            style="@style/Text.ItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Age"
+            app:layout_constraintStart_toStartOf="@id/text_view_field_two_name"
+            app:layout_constraintTop_toBottomOf="@id/text_view_field_two_name" />
+
+        <TextView
+            android:id="@+id/text_view_field_three_value"
+            style="@style/Text.Value"
+            tools:text="years, months (calculated)"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/text_view_field_two_value"
+            app:layout_constraintTop_toBottomOf="@id/text_view_field_two_value" />
+
+        <TextView
+            android:id="@+id/text_view_field_four_name"
+            style="@style/Text.ItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Birth Place"
+            app:layout_constraintStart_toStartOf="@id/text_view_field_three_name"
+            app:layout_constraintTop_toBottomOf="@id/text_view_field_three_name" />
+
+        <TextView
+            android:id="@+id/text_view_field_four_value"
+            style="@style/Text.Value"
+            tools:text="place name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/text_view_field_three_value"
+            app:layout_constraintTop_toBottomOf="@id/text_view_field_three_value" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

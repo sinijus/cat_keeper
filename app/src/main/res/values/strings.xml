@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Cat Keeper</string>
+    <string name="descr_item_card_icon">Card Icon</string>
 </resources>
