@@ -25,7 +25,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         catCardsFragments = listOf(
-//                CatCardsFragment.newInstance("Fragment 1"),
+                CatCardsFragment.newInstance("Fragment 1"),
+                CatCardsFragment.newInstance("Fragment 2"),
+                CatCardsFragment.newInstance("Fragment 3"),
 
 
         )
@@ -39,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     inner class PagerAdapter(activity: FragmentActivity, private val catCardsFragments: List<Fragment>) : FragmentStateAdapter(activity) {
-        override fun getItemCount() = 4
+        override fun getItemCount() = catCardsFragments.size
         override fun createFragment(position: Int): Fragment = catCardsFragments[position]
     }
 }

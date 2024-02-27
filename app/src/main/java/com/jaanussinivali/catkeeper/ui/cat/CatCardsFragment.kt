@@ -13,10 +13,16 @@ import com.jaanussinivali.catkeeper.databinding.FragmentCatCardsBinding
 import kotlin.concurrent.thread
 
 class CatCardsFragment : Fragment() {
-
+    private var fragmentTitle:String? = null
     private lateinit var binding: FragmentCatCardsBinding
     private val catDao: CatDao by lazy { CatKeeperDatabase.getDatabase(requireContext()).getCatDao() }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            fragmentTitle = it.getString(ARG_TITLE)
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,12 +55,18 @@ class CatCardsFragment : Fragment() {
             }
         }
     }
-
-    private fun updateCat(cat: Cat) {
-        thread {
-            catDao.updateCat(cat)
+    companion object {
+        private const val ARG_TITLE = "title"
+        fun newInstance(title:String): CatCardsFragment {
+            val fragment = CatCardsFragment()
+            val args = Bundle()
+            args.putString(ARG_TITLE, title)
+            fragment.arguments = args
+            return fragment
         }
     }
+
+
 
 
 
