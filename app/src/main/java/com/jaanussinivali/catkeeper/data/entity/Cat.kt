@@ -6,33 +6,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 
-@Entity(tableName = "cat")
-data class Cat(
-    @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val name: String,
-    val weight: Weight?,
-    @Embedded(prefix = "general_") val general: General?,
-    @Embedded(prefix = "medical_") val medical: Medical?,
-    @Embedded(prefix = "ins_") val insurance: Insurance?
-)
-
-@Entity(tableName = "weight")
-data class Weight(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val catId: Int,
-    val date: String?,
-    val value: Float?
-)
-
-data class CatWithWeights(
-    @Embedded val cat: Cat,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "catId"
-    )
-    val weights: List<Weight>
-)
-
 data class General(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "official_name") val officialName: String?,
@@ -53,6 +26,32 @@ data class Insurance(
     val phone: String?,
     @ColumnInfo(name = "valid_until") val validUntil: String?,
     val sum: Int?
+)
+
+data class CatWithWeights(
+    @Embedded val cat: Cat,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "catId"
+    )
+    val weights: List<Weight>
+)
+
+@Entity(tableName = "cat")
+data class Cat(
+    @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val name: String,
+    @Embedded(prefix = "general_") val general: General?,
+    @Embedded(prefix = "medical_") val medical: Medical?,
+    @Embedded(prefix = "ins_") val insurance: Insurance?
+)
+
+@Entity(tableName = "weight")
+data class Weight(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val catId: Int,
+    val date: String?,
+    val value: Float?
 )
 
 

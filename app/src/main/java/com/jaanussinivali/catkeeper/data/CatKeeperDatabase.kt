@@ -9,6 +9,7 @@ import com.jaanussinivali.catkeeper.data.entity.Weight
 
 @Database(entities = [Cat::class, Weight::class], version = 1)
 abstract class CatKeeperDatabase: RoomDatabase() {
+    abstract fun getCatDao(): CatDao
 
     companion object {
         @Volatile

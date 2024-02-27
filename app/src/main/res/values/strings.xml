@@ -1,4 +1,23 @@
 <resources>
     <string name="app_name">Cat Keeper</string>
     <string name="descr_item_card_icon">Card Icon</string>
+    <string name="descr_card_edit_icon">Edit icon</string>
+    <string name="descr_general_icon">General card icon</string>
+    <string name="fragment_text_general">General</string>
+    <string name="fragment_text_official_name">Official Name</string>
+    <string name="fragment_text_birth_date">Birth Date</string>
+    <string name="fragment_text_age">Age</string>
+    <string name="fragment_text_birth_place">Birth Place</string>
+    <string name="descr_medical_icon">Medical card icon</string>
+    <string name="fragment_text_medical">Medical</string>
+    <string name="fragment_text_last_doctor_visit">Last Doctor Visit</string>
+    <string name="fragment_text_last_worm_medicine">Last Worm Medicine</string>
+    <string name="fragment_text_last_vaccination">Last Vaccination</string>
+    <string name="fragment_text_weight">Weight chart:</string>
+    <string name="descr_insurance_icon">Insurance card icon</string>
+    <string name="fragment_text_insurance">Insurance\t\t</string>
+    <string name="fragment_text_company">Company</string>
+    <string name="fragment_text_phone">Phone</string>
+    <string name="fragment_text_valid_until">Valid Until</string>
+    <string name="fragment_text_sum">Sum</string>
 </resources>
