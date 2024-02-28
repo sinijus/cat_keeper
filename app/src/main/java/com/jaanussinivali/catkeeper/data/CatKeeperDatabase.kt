@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.jaanussinivali.catkeeper.data.entity.Cat
 import com.jaanussinivali.catkeeper.data.entity.Weight
 
-@Database(entities = [Cat::class, Weight::class], version = 1)
+@Database(entities = [Cat::class, Weight::class], version = 2)
 abstract class CatKeeperDatabase: RoomDatabase() {
     abstract fun getCatDao(): CatDao
 

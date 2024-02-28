@@ -40,7 +40,7 @@ data class CatWithWeights(
 @Entity(tableName = "cat")
 data class Cat(
     @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val name: String,
+    val name: String?,
     @Embedded(prefix = "general_") val general: General?,
     @Embedded(prefix = "medical_") val medical: Medical?,
     @Embedded(prefix = "ins_") val insurance: Insurance?

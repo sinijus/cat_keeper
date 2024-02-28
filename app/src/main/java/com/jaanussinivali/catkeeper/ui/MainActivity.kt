@@ -2,6 +2,7 @@ package com.jaanussinivali.catkeeper.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager.widget.PagerAdapter
@@ -33,7 +34,8 @@ class MainActivity : AppCompatActivity() {
         setFragments()
         binding.pager.adapter = PagerAdapter(this, catCardsFragments)
         TabLayoutMediator(binding.tabs, binding.pager) { tab, position ->
-                tab.text = "Cat ${position + 1}"
+            tab.text = "Cat ${position + 1}"
+            tab.icon = AppCompatResources.getDrawable(this, R.drawable.ic_pets_24)
         }.attach()
     }
 

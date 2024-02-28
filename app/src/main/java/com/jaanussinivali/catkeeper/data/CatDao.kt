@@ -7,6 +7,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.jaanussinivali.catkeeper.data.entity.Cat
 import com.jaanussinivali.catkeeper.data.entity.CatWithWeights
+import com.jaanussinivali.catkeeper.data.entity.General
 
 @Dao
 interface CatDao {

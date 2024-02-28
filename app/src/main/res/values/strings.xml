@@ -20,4 +20,5 @@
     <string name="fragment_text_phone">Phone</string>
     <string name="fragment_text_valid_until">Valid Until</string>
     <string name="fragment_text_sum">Sum</string>
+    <string name="descr_cat_main_profile_picture">Cat main profile picture</string>
 </resources>
