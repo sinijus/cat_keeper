@@ -33,11 +33,15 @@ class MainActivity : AppCompatActivity() {
 
         setFragments()
         binding.pager.adapter = PagerAdapter(this, catCardsFragments)
+        setTabLayout()
+
+    }
+    private fun setTabLayout() {
         TabLayoutMediator(binding.tabs, binding.pager) { tab, position ->
             tab.text = "Cat ${position + 1}"
             tab.icon = AppCompatResources.getDrawable(this, R.drawable.ic_pets_24)
-        }.attach()
-    }
+        }.attach()    }
+
 
     private fun setFragments() {
         catCardsFragments = listOf(

@@ -9,7 +9,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jaanussinivali.catkeeper.data.CatDao
 import com.jaanussinivali.catkeeper.data.CatKeeperDatabase
 import com.jaanussinivali.catkeeper.data.entity.Cat
-import com.jaanussinivali.catkeeper.data.entity.CatWithWeights
+import com.jaanussinivali.catkeeper.data.entity.General
+import com.jaanussinivali.catkeeper.data.entity.Insurance
+import com.jaanussinivali.catkeeper.data.entity.Medical
 import com.jaanussinivali.catkeeper.databinding.DialogEditCatCardBinding
 import com.jaanussinivali.catkeeper.databinding.DialogEditImageAndNameBinding
 import com.jaanussinivali.catkeeper.databinding.FragmentCatCardsBinding
@@ -41,7 +43,7 @@ class CatCardsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             fragmentTitle = it.getString(ARG_TITLE)
-            fragmentNumber = it.getInt((ARG_POS))
+            fragmentNumber = it.getInt((ARG_POS)) + 1
         }
     }
 
@@ -62,59 +64,82 @@ class CatCardsFragment : Fragment() {
 
     private fun displayFields() {
         thread {
-            val catWithWeights: CatWithWeights? = fragmentNumber.let { catDao.getCat(it) }
+//            val cat: Cat = catDao.getCat(fragmentNumber)
+            val general = catDao.getGeneral(fragmentNumber)
+            val medical = catDao.getMedical(fragmentNumber)
+            val insurance = catDao.getInsurance(fragmentNumber)
+
             requireActivity().runOnUiThread {
-                when (catWithWeights) {
-                    null -> {
-                        binding.textViewOfficialNameValue.text = "name value"
-                        binding.textViewBirthDateValue.text = "__/__/____"
-                        binding.textViewAgeValue.text = "age value"
-                        binding.textViewBirthPlaceValue.text = "place value"
-                        binding.textViewLastDoctorVisitDate.text = "__/__/____"
-                        binding.textViewLastWormMedicineDate.text = "__/__/____"
-                        binding.textViewLastVaccinationDate.text = "__/__/____"
+                binding.textViewOfficialNameValue.text = general.officialName
+                binding.textViewBirthDateValue.text = general.birthDate
+                binding.textViewAgeValue.text = general.age.toString()
+                binding.textViewBirthPlaceValue.text = general.birthPlace
 
-                        binding.textViewInsuranceNameValue.text = "Trying to get cat name here"
-                        binding.textViewInsurancePhoneNumber.text = "Trying to get cat name here"
-                        binding.textViewInsuranceValidUntilDate.text = "__/__/____"
-                        binding.textViewInsuranceSumValue.text = "1000€"
-                    }
+                binding.textViewLastDoctorVisitDate.text = medical.lastDoctorVisit
+                binding.textViewLastWormMedicineDate.text = medical.lastWormMedicine
+                binding.textViewLastVaccinationDate.text = medical.lastVaccination
 
-                    else -> {
-                        binding.textViewOfficialNameValue.text =
-                            catWithWeights.cat.general?.officialName
-                        binding.textViewBirthDateValue.text = ""
-                        binding.textViewAgeValue.text = ""
-                        binding.textViewBirthPlaceValue.text = ""
-                        binding.textViewLastDoctorVisitDate.text = "__/__/____"
-                        binding.textViewLastWormMedicineDate.text = "__/__/____"
-                        binding.textViewLastVaccinationDate.text = "__/__/____"
-
-                        binding.textViewInsuranceNameValue.text = ""
-                        binding.textViewInsurancePhoneNumber.text = ""
-                        binding.textViewInsuranceValidUntilDate.text = "__/__/____"
-                        binding.textViewInsuranceSumValue.text = ""
-                    }
-                }
+                binding.textViewInsuranceNameValue.text = insurance.company
+                binding.textViewInsurancePhoneNumber.text = insurance.phone
+                binding.textViewInsuranceValidUntilDate.text = insurance.validUntil
+                binding.textViewInsuranceSumValue.text = insurance.sum.toString()
             }
         }
     }
 
     private fun setOnClickListeners() {
         binding.cardViewImage.setOnClickListener { showEditDialogNameAndPicture() }
-        binding.cardViewGeneral.setOnClickListener { showEditDialog(GENERAL, OFFICIAL_NAME, BIRTH_DATE, AGE, BIRTH_PLACE ) }
-        binding.cardViewMedical.setOnClickListener { showEditDialog(MEDICAL, DOCTOR_VISIT, WORM_MEDICINE, VACCINATION, "") }
-        binding.cardViewInsurance.setOnClickListener { showEditDialog(INSURANCE, INS_NAME, INS_PHONE, INS_END_DATE, INS_SUM) }
+        binding.cardViewGeneral.setOnClickListener {
+            showEditDialog(
+                GENERAL,
+                OFFICIAL_NAME,
+                BIRTH_DATE,
+                AGE,
+                BIRTH_PLACE
+            )
+        }
+        binding.cardViewMedical.setOnClickListener {
+            showEditDialog(
+                MEDICAL,
+                DOCTOR_VISIT,
+                WORM_MEDICINE,
+                VACCINATION,
+                ""
+            )
+        }
+        binding.cardViewInsurance.setOnClickListener {
+            showEditDialog(
+                INSURANCE,
+                INS_NAME,
+                INS_PHONE,
+                INS_END_DATE,
+                INS_SUM
+            )
+        }
     }
 
     private fun showEditDialogNameAndPicture() {
         val dialogBinding = DialogEditImageAndNameBinding.inflate(requireActivity().layoutInflater)
         dialogBinding.textInputNameLayout.hint = "Cat name (on tab view)"
+        thread {
+            val cat: Cat = catDao.getCat(fragmentNumber)
+            requireActivity().runOnUiThread {
+                dialogBinding.textInputNameValue.setText(cat?.name)
+            }
+        }
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Update name and image")
             .setView(dialogBinding.root)
             .setPositiveButton("Save") { _, _ ->
-
+                thread {
+                    catDao.update(
+                        Cat(
+                            id = fragmentNumber,
+                            name = dialogBinding.textInputNameValue.text.toString()
+                        )
+                    )
+                }
+                displayFields()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.cancel()
@@ -122,16 +147,106 @@ class CatCardsFragment : Fragment() {
             .show()
     }
 
-    private fun showEditDialog(cardName: String, hintOne: String, hintTwo: String, hintThree: String, hintFour: String?) {
+    private fun showEditDialog(
+        cardName: String,
+        hintOne: String,
+        hintTwo: String,
+        hintThree: String,
+        hintFour: String?
+    ) {
         val dialogBinding = DialogEditCatCardBinding.inflate(requireActivity().layoutInflater)
         dialogBinding.textInputOneLayout.hint = hintOne
         dialogBinding.textInputTwoLayout.hint = hintTwo
         dialogBinding.textInputThreeLayout.hint = hintThree
         dialogBinding.textInputFourLayout.hint = hintFour
+        when (cardName) {
+            GENERAL -> {
+                thread {
+                    val general = catDao.getGeneral(fragmentNumber)
+                    requireActivity().runOnUiThread {
+                        dialogBinding.textInputOneValue.setText(general.officialName)
+                        dialogBinding.textInputTwoValue.setText(general.birthDate)
+                        dialogBinding.textInputThreeValue.setText(general.age.toString())
+                        dialogBinding.textInputFourValue.setText(general.birthPlace)
+                    }
+                }
+            }
+
+            MEDICAL -> {
+                thread {
+                    val medical = catDao.getMedical(fragmentNumber)
+                    requireActivity().runOnUiThread {
+                        dialogBinding.textInputOneValue.setText(medical.lastDoctorVisit)
+                        dialogBinding.textInputTwoValue.setText(medical.lastWormMedicine)
+                        dialogBinding.textInputThreeValue.setText(medical.lastVaccination)
+                    }
+                }
+            }
+
+            INSURANCE -> {
+                thread {
+                    val insurance = catDao.getInsurance(fragmentNumber)
+                    requireActivity().runOnUiThread {
+                        dialogBinding.textInputOneValue.setText(insurance.company)
+                        dialogBinding.textInputTwoValue.setText(insurance.phone)
+                        dialogBinding.textInputThreeValue.setText(insurance.validUntil)
+                        dialogBinding.textInputFourValue.setText(insurance.sum.toString())
+                    }
+                }
+            }
+        }
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Update $cardName")
             .setView(dialogBinding.root)
             .setPositiveButton("Save") { _, _ ->
+                when (cardName) {
+                    GENERAL -> {
+                        thread {
+                            catDao.update(
+                                General(
+                                    id = fragmentNumber,
+                                    catId = fragmentNumber,
+                                    officialName = dialogBinding.textInputOneValue.text.toString(),
+                                    birthDate = dialogBinding.textInputTwoValue.text.toString(),
+                                    age = dialogBinding.textInputThreeValue.text.toString().toInt(),
+                                    birthPlace = dialogBinding.textInputFourValue.text.toString()
+                                )
+                            )
+                        }
+                        displayFields()
+                    }
+
+                    MEDICAL -> {
+                        thread {
+                            catDao.update(
+                                Medical(
+                                    id = fragmentNumber,
+                                    catId = fragmentNumber,
+                                    lastDoctorVisit = dialogBinding.textInputOneValue.text.toString(),
+                                    lastWormMedicine = dialogBinding.textInputTwoValue.text.toString(),
+                                    lastVaccination = dialogBinding.textInputThreeValue.text.toString()
+                                )
+                            )
+                        }
+                        displayFields()
+                    }
+
+                    INSURANCE -> {
+                        thread {
+                            catDao.update(
+                                Insurance(
+                                    id = fragmentNumber,
+                                    catId = fragmentNumber,
+                                    company = dialogBinding.textInputOneValue.text.toString(),
+                                    phone = dialogBinding.textInputTwoValue.text.toString(),
+                                    validUntil = dialogBinding.textInputThreeValue.text.toString(),
+                                    sum = dialogBinding.textInputFourValue.text.toString().toInt()
+                                )
+                            )
+                        }
+                        displayFields()
+                    }
+                }
 //                val general = General(
 //                    officialName = "",
 //                    birthDate = "",
