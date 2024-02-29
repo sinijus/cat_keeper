@@ -41,27 +41,27 @@ abstract class CatKeeperDatabase : RoomDatabase() {
                         catDao?.insert(
                             General(
                                 catId = 1,
-                                officialName = "Tips",
-                                birthDate = "111",
-                                birthPlace = "111",
-                                age = 2
+                                officialName = "",
+                                birthDate = "",
+                                birthPlace = "",
+                                age = 0
                             )
                         )
                         catDao?.insert(
                             Medical(
                                 catId = 1,
-                                lastDoctorVisit = "111",
-                                lastWormMedicine = "111",
-                                lastVaccination = "111"
+                                lastDoctorVisit = "",
+                                lastWormMedicine = "",
+                                lastVaccination = ""
                             )
                         )
                         catDao?.insert(
                             Insurance(
                                 catId = 1,
-                                company = "If",
-                                phone = "111",
-                                validUntil = "22.11.2024",
-                                sum = 1000
+                                company = "",
+                                phone = "",
+                                validUntil = "",
+                                sum = 0
                             )
                         )
                         catDao?.insert(Cat(name = "Cat Two"))
