@@ -7,8 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.anychart.AnyChart
+import com.anychart.AnyChartView
 import com.anychart.chart.common.dataentry.DataEntry
 import com.anychart.chart.common.dataentry.ValueDataEntry
+import com.anychart.charts.Cartesian
+import com.anychart.core.cartesian.series.Line
+import com.anychart.data.Mapping
+import com.anychart.enums.Anchor
+import com.anychart.enums.MarkerType
+import com.anychart.enums.TooltipPositionMode
+import com.anychart.graphics.vector.Stroke
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jaanussinivali.catkeeper.data.CatDao
 import com.jaanussinivali.catkeeper.data.CatKeeperDatabase
@@ -104,13 +112,37 @@ class CatCardsFragment : Fragment() {
     }
 
     private fun setAndDisplayWeightChart() {
-        val pie = AnyChart.area()
-        val data: MutableList<DataEntry> = ArrayList()
-        data.add(ValueDataEntry("John", 10000))
-        data.add(ValueDataEntry("Jake", 12000))
-        data.add(ValueDataEntry("Peter", 18000))
-        pie.data(data)
-        binding.anyChartView?.setChart(pie)
+        val anyChartView = binding.anyChartView
+        val cartesian = AnyChart.line()
+        cartesian.title("Weight")
+//        cartesian.animation(true)
+        cartesian.crosshair().enabled(true)
+        cartesian.crosshair()
+            .yLabel(true)
+            .yStroke(null as Stroke?, null, null, null as String?, null as String?)
+        cartesian.tooltip().positionMode(TooltipPositionMode.POINT)
+        cartesian.yAxis(0).title("kg")
+        cartesian.xAxis(0).labels().padding(0.0)
+        val seriesData: MutableList<DataEntry> = ArrayList()
+        seriesData.add(ValueDataEntry("12.12.2023", 3.0))
+        seriesData.add(ValueDataEntry("9.01.2024", 3.1))
+        seriesData.add(ValueDataEntry("5.02.2024", 3.0))
+        seriesData.add(ValueDataEntry("2.03.2024", 2.9))
+
+        val series1: Line = cartesian.line(seriesData)
+        series1.name(cat.name)
+        series1.hovered().markers().enabled(true)
+        series1.hovered().markers()
+            .type(MarkerType.CIRCLE)
+            .size(4.0)
+        series1.tooltip()
+            .position("right")
+            .anchor(Anchor.LEFT_CENTER)
+            .offsetX(0.0)
+            .offsetY(0.0)
+        cartesian.legend().fontColor("#111111")
+        anyChartView.setBackgroundColor("#FFFFFF")
+        anyChartView.setChart(cartesian)
     }
 
     private fun setOnClickListeners() {
@@ -269,5 +301,10 @@ class CatCardsFragment : Fragment() {
         }
     }
 }
+//
+//
+//private class CustomDataEntry internal constructor(x: String?, value: Number?) :
+//    ValueDataEntry(x, value) {
+//}
 
 

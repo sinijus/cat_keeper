@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -16,8 +16,10 @@
             style="@style/Card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp">
-
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/image_view_main_pic"
@@ -25,10 +27,24 @@
                 android:layout_height="200dp"
                 android:contentDescription="@string/descr_cat_main_profile_picture"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img_tips_2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:src="@drawable/img_tips_2" />
+        </com.google.android.material.card.MaterialCardView>
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_view_chart"
+            style="@style/Card"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/card_view_image"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.anychart.AnyChartView
+                android:id="@+id/any_chart_view"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:focusableInTouchMode="true" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -36,13 +52,18 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_view_general"
             style="@style/Card"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="12dp"
+            app:layout_constraintEnd_toStartOf="@id/card_view_insurance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_view_image">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
                 android:padding="16dp">
 
                 <ImageView
@@ -149,13 +170,17 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_view_medical"
             style="@style/Card"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="12dp"
+            app:layout_constraintEnd_toStartOf="@id/card_view_insurance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_view_general">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
                 android:padding="16dp">
 
                 <ImageView
@@ -236,15 +261,6 @@
                     app:layout_constraintTop_toBottomOf="@id/text_view_last_worm_medicine_date"
                     tools:text="11th October 2022" />
 
-                <TextView
-                    android:id="@+id/text_view_weight"
-                    style="@style/Text.ItemName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/fragment_text_weight"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/text_view_last_vaccination" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
@@ -252,9 +268,13 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_view_insurance"
             style="@style/Card"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp">
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/card_view_general"
+            app:layout_constraintTop_toTopOf="@id/card_view_general">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -362,6 +382,6 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
