@@ -13,7 +13,7 @@ import com.jaanussinivali.catkeeper.data.entity.Weight
 
 @Database(
     entities = [Cat::class, Weight::class, General::class, Medical::class, Insurance::class],
-    version = 1
+    version = 2
 )
 abstract class CatKeeperDatabase : RoomDatabase() {
     abstract fun getCatDao(): CatDao
@@ -44,8 +44,8 @@ abstract class CatKeeperDatabase : RoomDatabase() {
                                 officialName = "",
                                 birthDate = "",
                                 birthPlace = "",
-                                age = 0
-                            )
+                                age = ""
+                            ),
                         )
                         catDao?.insert(
                             Medical(
@@ -61,7 +61,7 @@ abstract class CatKeeperDatabase : RoomDatabase() {
                                 company = "",
                                 phone = "",
                                 validUntil = "",
-                                sum = 0
+                                sum = ""
                             )
                         )
                         catDao?.insert(Cat(name = "Cat Two"))
@@ -71,7 +71,7 @@ abstract class CatKeeperDatabase : RoomDatabase() {
                                 officialName = "",
                                 birthDate = "",
                                 birthPlace = "",
-                                age = 0
+                                age = ""
                             )
                         )
                         catDao?.insert(
@@ -88,7 +88,7 @@ abstract class CatKeeperDatabase : RoomDatabase() {
                                 company = "",
                                 phone = "",
                                 validUntil = "",
-                                sum = 0
+                                sum = ""
                             )
                         )
                     }

@@ -10,7 +10,7 @@ data class General(
     val catId: Int?,
     @ColumnInfo(name = "official_name") val officialName: String?,
     @ColumnInfo(name = "birth_date") val birthDate: String?,
-    val age: Int?,
+    val age: String?,
     @ColumnInfo(name = "birth_place") val birthPlace: String?,
 )
 
@@ -37,7 +37,7 @@ data class Insurance(
     val company: String?,
     val phone: String?,
     @ColumnInfo(name = "valid_until") val validUntil: String?,
-    val sum: Int?
+    val sum: String?
 )
 
 @Entity(tableName = "cat")

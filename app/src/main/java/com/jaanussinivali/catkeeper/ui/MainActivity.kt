@@ -21,8 +21,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var database: CatKeeperDatabase
     private val catDao: CatDao by lazy { database.getCatDao() }
-
-    //    private val catCardsFragment: CatCardsFragment = CatCardsFragment()
     private lateinit var catCardsFragments: List<CatCardsFragment>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,14 +32,14 @@ class MainActivity : AppCompatActivity() {
         setFragments()
         binding.pager.adapter = PagerAdapter(this, catCardsFragments)
         setTabLayout()
-
     }
+
     private fun setTabLayout() {
         TabLayoutMediator(binding.tabs, binding.pager) { tab, position ->
             tab.text = "Cat ${position + 1}"
             tab.icon = AppCompatResources.getDrawable(this, R.drawable.ic_pets_24)
-        }.attach()    }
-
+        }.attach()
+    }
 
     private fun setFragments() {
         catCardsFragments = listOf(

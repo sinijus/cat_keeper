@@ -8,6 +8,7 @@ import com.jaanussinivali.catkeeper.data.entity.Cat
 import com.jaanussinivali.catkeeper.data.entity.General
 import com.jaanussinivali.catkeeper.data.entity.Insurance
 import com.jaanussinivali.catkeeper.data.entity.Medical
+import com.jaanussinivali.catkeeper.data.entity.Weight
 
 @Dao
 interface CatDao {
@@ -24,6 +25,9 @@ interface CatDao {
     @Insert
     fun insert(insurance: Insurance)
 
+    @Insert
+    fun insert(weight: Weight)
+
     @Query("SELECT*FROM general WHERE id=:id")
     fun getGeneral(id: Int): General
 
@@ -36,6 +40,9 @@ interface CatDao {
     @Query("SELECT*FROM cat WHERE id=:id")
     fun getCat(id: Int): Cat
 
+    @Query("SELECT*FROM weight")
+    fun getWeight(): List<Weight>
+
     @Update
     fun update(cat: Cat)
 
@@ -47,6 +54,9 @@ interface CatDao {
 
     @Update
     fun update(insurance: Insurance)
+
+    @Update
+    fun update(weight: Weight)
 
 
 }
