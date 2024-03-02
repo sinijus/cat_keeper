@@ -130,13 +130,7 @@ class CatCardsFragment : Fragment() {
 //                break
 //            } else
                 seriesData.add(ValueDataEntry(weight.date, weight.value))
-//            Toast(context, weight.value.toString(), Toast.LENGTH_LONG).show()
-
         }
-//        seriesData.add(ValueDataEntry("12.12.2023", 3.0))
-//        seriesData.add(ValueDataEntry("9.01.2024", 3.1))
-//        seriesData.add(ValueDataEntry("5.02.2024", 3.0))
-//        seriesData.add(ValueDataEntry("2.03.2024", 2.9))
 
         val series1: Line = cartesian.line(seriesData)
         series1.name(cat.name)
