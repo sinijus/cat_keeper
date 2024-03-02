@@ -17,6 +17,7 @@ data class General(
 @Entity(tableName = "weight")
 data class Weight(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val catId: Int?,
     val date: String?,
     val value: Float?
 )

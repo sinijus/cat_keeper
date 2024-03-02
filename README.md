@@ -8,8 +8,9 @@
         *) chart data insert
         *) update / style chart
         *) add calling function to insurance
-        *) change edit for cards
         *) image insert from Photos and Camera
+        *) change date input forms
+        *) calculate age from current date and birth date
         *) name tab item with cat name from database
         *) insert/delete tabs
 

@@ -22,4 +22,8 @@
     <string name="fragment_text_sum">Sum</string>
     <string name="descr_cat_main_profile_picture">Cat main profile picture</string>
     <string name="dialog_edit_image_button_text">Insert image from gallery</string>
+    <string name="descr_medical_edit_icon">Medical card edit icon</string>
+    <string name="descr_general_edit_icon">General card edit icon</string>
+    <string name="descr_insurance_edit_icon">Insurance card edit icon</string>
+    <string name="descr_weight_edit_icon">Weight card edit icon</string>
 </resources>

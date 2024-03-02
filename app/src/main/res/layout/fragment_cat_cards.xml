@@ -61,6 +61,17 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/text_view_general_heading" />
 
+                <ImageView
+                    android:id="@+id/image_view_general_edit_icon"
+                    style="@style/Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/descr_general_edit_icon"
+                    android:src="@drawable/ic_edit_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/text_view_general_heading" />
+
+
                 <TextView
                     android:id="@+id/text_view_general_heading"
                     style="@style/Text.Heading"
@@ -174,6 +185,17 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <ImageView
+                    android:id="@+id/image_view_medical_edit_icon"
+                    style="@style/Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/descr_medical_edit_icon"
+                    android:src="@drawable/ic_edit_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/text_view_medical_heading" />
+
+
                 <TextView
                     android:id="@+id/text_view_medical_heading"
                     style="@style/Text.Heading"
@@ -269,6 +291,17 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/text_view_insurance_heading" />
 
+
+                <ImageView
+                    android:id="@+id/image_view_insurance_edit_icon"
+                    style="@style/Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/descr_insurance_edit_icon"
+                    android:src="@drawable/ic_edit_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/text_view_insurance_heading" />
+
                 <TextView
                     android:id="@+id/text_view_insurance_heading"
                     style="@style/Text.Heading"
@@ -361,15 +394,33 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_view_chart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.anychart.AnyChartView
-                android:id="@+id/any_chart_view"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/card_view_insurance" />
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <com.anychart.AnyChartView
+                    android:id="@+id/any_chart_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <ImageView
+                    android:id="@+id/image_view_weight_chart_edit_icon"
+                    style="@style/Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/descr_weight_edit_icon"
+                    android:src="@drawable/ic_edit_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
 

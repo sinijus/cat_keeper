@@ -40,8 +40,8 @@ interface CatDao {
     @Query("SELECT*FROM cat WHERE id=:id")
     fun getCat(id: Int): Cat
 
-    @Query("SELECT*FROM weight")
-    fun getWeight(): List<Weight>
+    @Query("SELECT*FROM weight WHERE id=:id")
+    fun getWeights(id: Int): List<Weight>
 
     @Update
     fun update(cat: Cat)

@@ -12,8 +12,7 @@ import com.jaanussinivali.catkeeper.data.entity.Medical
 import com.jaanussinivali.catkeeper.data.entity.Weight
 
 @Database(
-    entities = [Cat::class, Weight::class, General::class, Medical::class, Insurance::class],
-    version = 2
+    entities = [Cat::class, Weight::class, General::class, Medical::class, Insurance::class], version = 3
 )
 abstract class CatKeeperDatabase : RoomDatabase() {
     abstract fun getCatDao(): CatDao
@@ -31,70 +30,66 @@ abstract class CatKeeperDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context) = Room.databaseBuilder(
             context, CatKeeperDatabase::class.java, "cat-keeper-database"
-        )
-            .addCallback(object : Callback() {
+        ).addCallback(object : Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
                     ioThread {
                         val catDao = DATABASE_INSTANCE?.getCatDao()
-                        catDao?.insert(Cat(name = "Cat One"))
+                        catDao?.insert(Cat(name = "Tips kass"))
                         catDao?.insert(
                             General(
-                                catId = 1,
-                                officialName = "",
-                                birthDate = "",
-                                birthPlace = "",
-                                age = ""
+                                catId = 1, officialName = "", birthDate = "21.6.2022", birthPlace = "Valga", age = "2"
                             ),
                         )
                         catDao?.insert(
                             Medical(
-                                catId = 1,
-                                lastDoctorVisit = "",
-                                lastWormMedicine = "",
-                                lastVaccination = ""
+                                catId = 1, lastDoctorVisit = "13.11.2023", lastWormMedicine = "12.01.2024", lastVaccination = "13.11.2023"
                             )
                         )
                         catDao?.insert(
                             Insurance(
-                                catId = 1,
-                                company = "",
-                                phone = "",
-                                validUntil = "",
-                                sum = ""
+                                catId = 1, company = "", phone = "", validUntil = "", sum = ""
                             )
                         )
+                        catDao?.insert(
+                            Weight(
+                                catId = 1, date = "12.12.2023", value = 2.8f
+                            )
+                        )
+                        catDao?.insert(
+                            Weight(
+                                catId = 1, date = "9.01.2024", value = 3.0f
+                            )
+                        )
+                        catDao?.insert(
+                            Weight(
+                                catId = 1, date = "5.02.2024", value = 3.0f
+                            )
+                        )
+                        catDao?.insert(
+                            Weight(
+                                catId = 1, date = "2.03.2024", value = 2.9f
+                            )
+                        )
+
                         catDao?.insert(Cat(name = "Cat Two"))
                         catDao?.insert(
                             General(
-                                catId = 2,
-                                officialName = "",
-                                birthDate = "",
-                                birthPlace = "",
-                                age = ""
+                                catId = 2, officialName = "", birthDate = "", birthPlace = "", age = ""
                             )
                         )
                         catDao?.insert(
                             Medical(
-                                catId = 2,
-                                lastDoctorVisit = "",
-                                lastWormMedicine = "",
-                                lastVaccination = ""
+                                catId = 2, lastDoctorVisit = "", lastWormMedicine = "", lastVaccination = ""
                             )
                         )
                         catDao?.insert(
                             Insurance(
-                                catId = 2,
-                                company = "",
-                                phone = "",
-                                validUntil = "",
-                                sum = ""
+                                catId = 2, company = "", phone = "", validUntil = "", sum = ""
                             )
                         )
                     }
                 }
-            })
-            .fallbackToDestructiveMigration()
-            .build()
+            }).fallbackToDestructiveMigration().build()
     }
 }

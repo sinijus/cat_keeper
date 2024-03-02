@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.anychart.AnyChart
-import com.anychart.AnyChartView
 import com.anychart.chart.common.dataentry.DataEntry
 import com.anychart.chart.common.dataentry.ValueDataEntry
-import com.anychart.charts.Cartesian
 import com.anychart.core.cartesian.series.Line
-import com.anychart.data.Mapping
 import com.anychart.enums.Anchor
 import com.anychart.enums.MarkerType
 import com.anychart.enums.TooltipPositionMode
@@ -43,6 +41,7 @@ import com.jaanussinivali.catkeeper.ui.cat.CatFragmentConstants.OFFICIAL_NAME
 import com.jaanussinivali.catkeeper.ui.cat.CatFragmentConstants.VACCINATION
 import com.jaanussinivali.catkeeper.ui.cat.CatFragmentConstants.WORM_MEDICINE
 import kotlin.concurrent.thread
+import kotlin.math.roundToInt
 
 
 class CatCardsFragment : Fragment() {
@@ -54,7 +53,7 @@ class CatCardsFragment : Fragment() {
     private lateinit var general: General
     private lateinit var medical: Medical
     private lateinit var insurance: Insurance
-    private lateinit var weight: List<Weight>
+    private lateinit var weights: List<Weight>
 
 
 //    private val selectImageIntent by lazy {
@@ -90,7 +89,7 @@ class CatCardsFragment : Fragment() {
             general = catDao.getGeneral(fragmentNumber)
             medical = catDao.getMedical(fragmentNumber)
             insurance = catDao.getInsurance(fragmentNumber)
-            weight = catDao.getWeight()
+            weights = catDao.getWeights(fragmentNumber)
 
             requireActivity().runOnUiThread {
                 binding.textViewOfficialNameValue.text = general.officialName
@@ -124,10 +123,20 @@ class CatCardsFragment : Fragment() {
         cartesian.yAxis(0).title("kg")
         cartesian.xAxis(0).labels().padding(0.0)
         val seriesData: MutableList<DataEntry> = ArrayList()
-        seriesData.add(ValueDataEntry("12.12.2023", 3.0))
-        seriesData.add(ValueDataEntry("9.01.2024", 3.1))
-        seriesData.add(ValueDataEntry("5.02.2024", 3.0))
-        seriesData.add(ValueDataEntry("2.03.2024", 2.9))
+        for (weight in weights) {
+//            if (weight.catId == null || weight.date == null || weight.value == null) {
+////                seriesData.add(ValueDataEntry("", 0))
+//                binding.cardViewChart.visibility = View.GONE
+//                break
+//            } else
+                seriesData.add(ValueDataEntry(weight.date, weight.value))
+//            Toast(context, weight.value.toString(), Toast.LENGTH_LONG).show()
+
+        }
+//        seriesData.add(ValueDataEntry("12.12.2023", 3.0))
+//        seriesData.add(ValueDataEntry("9.01.2024", 3.1))
+//        seriesData.add(ValueDataEntry("5.02.2024", 3.0))
+//        seriesData.add(ValueDataEntry("2.03.2024", 2.9))
 
         val series1: Line = cartesian.line(seriesData)
         series1.name(cat.name)
@@ -147,15 +156,22 @@ class CatCardsFragment : Fragment() {
 
     private fun setOnClickListeners() {
         binding.cardViewImage.setOnClickListener { showEditDialogNameAndPicture() }
-        binding.cardViewGeneral.setOnClickListener {
+        binding.imageViewGeneralEditIcon.setOnClickListener {
             showEditDialog(GENERAL, OFFICIAL_NAME, BIRTH_DATE, AGE, BIRTH_PLACE)
         }
-        binding.cardViewMedical.setOnClickListener {
+        binding.imageViewMedicalEditIcon.setOnClickListener {
             showEditDialog(MEDICAL, DOCTOR_VISIT, WORM_MEDICINE, VACCINATION, "")
         }
-        binding.cardViewInsurance.setOnClickListener {
+        binding.imageViewInsuranceEditIcon.setOnClickListener {
             showEditDialog(INSURANCE, INS_NAME, INS_PHONE, INS_END_DATE, INS_SUM)
         }
+        binding.imageViewWeightChartEditIcon.setOnClickListener {
+//            showEditDialogWeightChart()
+        }
+    }
+
+    private fun showEditDialogWeightChart() {
+        TODO("Not yet implemented")
     }
 
     private fun showEditDialogNameAndPicture() {
