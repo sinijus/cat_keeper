@@ -3,9 +3,12 @@ package com.jaanussinivali.catkeeper.ui.cat
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -47,6 +50,10 @@ import com.jaanussinivali.catkeeper.ui.cat.CatFragmentConstants.MEDICAL
 import com.jaanussinivali.catkeeper.ui.cat.CatFragmentConstants.OFFICIAL_NAME
 import com.jaanussinivali.catkeeper.ui.cat.CatFragmentConstants.VACCINATION
 import com.jaanussinivali.catkeeper.ui.cat.CatFragmentConstants.WORM_MEDICINE
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
 import kotlin.concurrent.thread
 import kotlin.math.roundToInt
 
@@ -86,14 +93,16 @@ class CatCardsFragment : Fragment() {
         displayFields()
         setOnClickListeners()
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             capturedImage = imageBitmap
             binding.imageViewMainPic.setImageBitmap(capturedImage)
-            binding.imageViewMainPic.visibility = View.VISIBLE
         }
+        val imagePath = saveImageToInternalStorage(capturedImage!!)
+        saveImagePathToSharedPreferences(imagePath)
     }
 
     private fun displayFields() {
@@ -105,6 +114,8 @@ class CatCardsFragment : Fragment() {
             weights = catDao.getWeights(fragmentNumber)
 
             requireActivity().runOnUiThread {
+                binding.imageViewMainPic.setImageBitmap(loadImageFromInternalStorage())
+
                 binding.textViewOfficialNameValue.text = general.officialName
                 binding.textViewBirthDateValue.text = general.birthDate
                 binding.textViewAgeValue.text = general.age
@@ -123,13 +134,23 @@ class CatCardsFragment : Fragment() {
         }
     }
 
+    private fun loadImageFromInternalStorage(): Bitmap? {
+        val sharedPref = requireContext().getSharedPreferences("${cat.name}_image", Context.MODE_PRIVATE)
+        val imagePath = sharedPref.getString("image_path", null)
+        return if (imagePath != null) {
+            BitmapFactory.decodeFile(imagePath)
+        } else {
+            null
+        }
+    }
+
     private fun setAndDisplayWeightChart() {
         val anyChartView = binding.anyChartView
         thread {
             val cartesian = AnyChart.line()
 
             requireActivity().runOnUiThread {
-                cartesian.title("Weight")
+//                cartesian.title("Weight")
                 cartesian.crosshair().enabled(true)
                 cartesian.crosshair()
                     .yLabel(true)
@@ -152,12 +173,9 @@ class CatCardsFragment : Fragment() {
                     .offsetX(0.0)
                     .offsetY(0.0)
                 cartesian.legend().fontColor("#111111")
-//                cartesian.background("#2CEF6C00")
-//                anyChartView.setBackgroundColor("#2CEF6C00")
                 anyChartView.setChart(cartesian)
             }
         }
-
     }
 
     private fun setOnClickListeners() {
@@ -218,6 +236,30 @@ class CatCardsFragment : Fragment() {
             }.setNegativeButton("Cancel") { dialog, _ ->
                 dialog.cancel()
             }.show()
+    }
+
+    private fun saveImageToInternalStorage(bitmap: Bitmap): String {
+        val wrapper = ContextWrapper(requireContext())
+        var file = wrapper.getDir("images", Context.MODE_PRIVATE)
+        file = File(file, "${cat.name}_image.jpg")
+
+        try {
+            val stream: OutputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            stream.flush()
+            stream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return file.absolutePath
+    }
+
+    private fun saveImagePathToSharedPreferences(imagePath: String) {
+        val sharedPref = requireContext().getSharedPreferences("${cat.name}_image", Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.putString("image_path", imagePath)
+        editor.apply()
     }
 
     private fun showEditDialog(
