@@ -4,14 +4,15 @@
     Run it with Android Studio using AVD with API version 34 (supported 24-34).
 
     TODO:
-        *) validate all input fields
         *) chart data insert
-        *) update / style chart
         *) add calling function to insurance
-        *) image insert from Photos and Camera
         *) change date input forms
         *) calculate age from current date and birth date
+        *) validate all input fields
+        *) update / style chart
         *) name tab item with cat name from database
+        *) image insert from Photos and Camera
+        *) restructure / decompose fragment_cat_cards
         *) insert/delete tabs
 
     Credits:

@@ -12,7 +12,7 @@ import com.jaanussinivali.catkeeper.data.entity.Medical
 import com.jaanussinivali.catkeeper.data.entity.Weight
 
 @Database(
-    entities = [Cat::class, Weight::class, General::class, Medical::class, Insurance::class], version = 3
+    entities = [Cat::class, Weight::class, General::class, Medical::class, Insurance::class], version = 1
 )
 abstract class CatKeeperDatabase : RoomDatabase() {
     abstract fun getCatDao(): CatDao
@@ -88,6 +88,11 @@ abstract class CatKeeperDatabase : RoomDatabase() {
                                 catId = 2, company = "", phone = "", validUntil = "", sum = ""
                             )
                         )
+//                        catDao?.insert(
+//                            Weight(
+//                                catId = 2, date = "", value = 0f
+//                            )
+//                        )
                     }
                 }
             }).fallbackToDestructiveMigration().build()

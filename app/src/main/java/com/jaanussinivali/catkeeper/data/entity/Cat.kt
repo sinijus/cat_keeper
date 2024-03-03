@@ -1,8 +1,10 @@
 package com.jaanussinivali.catkeeper.data.entity
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.Relation
 
 @Entity(tableName = "general")
 data class General(
@@ -46,6 +48,7 @@ data class Cat(
     @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String?,
 )
+
 
 
 

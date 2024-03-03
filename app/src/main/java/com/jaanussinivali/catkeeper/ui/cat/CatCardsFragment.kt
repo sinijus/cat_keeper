@@ -1,6 +1,8 @@
 package com.jaanussinivali.catkeeper.ui.cat
 
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -105,47 +107,53 @@ class CatCardsFragment : Fragment() {
                 binding.textViewInsurancePhoneNumber.text = insurance.phone
                 binding.textViewInsuranceValidUntilDate.text = insurance.validUntil
                 binding.textViewInsuranceSumValue.text = insurance.sum
-                setAndDisplayWeightChart()
+                if (weights.isNotEmpty()) setAndDisplayWeightChart()
+                else binding.anyChartView.visibility = View.GONE
             }
         }
     }
 
     private fun setAndDisplayWeightChart() {
         val anyChartView = binding.anyChartView
-        val cartesian = AnyChart.line()
-        cartesian.title("Weight")
-//        cartesian.animation(true)
-        cartesian.crosshair().enabled(true)
-        cartesian.crosshair()
-            .yLabel(true)
-            .yStroke(null as Stroke?, null, null, null as String?, null as String?)
-        cartesian.tooltip().positionMode(TooltipPositionMode.POINT)
-        cartesian.yAxis(0).title("kg")
-        cartesian.xAxis(0).labels().padding(0.0)
-        val seriesData: MutableList<DataEntry> = ArrayList()
-        for (weight in weights) {
+        thread {
+            val cartesian = AnyChart.line()
+
+            requireActivity().runOnUiThread {
+                cartesian.title("Weight")
+                cartesian.crosshair().enabled(true)
+                cartesian.crosshair()
+                    .yLabel(true)
+                    .yStroke(null as Stroke?, null, null, null as String?, null as String?)
+                cartesian.tooltip().positionMode(TooltipPositionMode.POINT)
+                cartesian.yAxis(0).title("kg")
+                cartesian.xAxis(0).labels().padding(0.0)
+                val seriesData: MutableList<DataEntry> = ArrayList()
+                for (weight in weights) {
 //            if (weight.catId == null || weight.date == null || weight.value == null) {
 ////                seriesData.add(ValueDataEntry("", 0))
 //                binding.cardViewChart.visibility = View.GONE
 //                break
 //            } else
-                seriesData.add(ValueDataEntry(weight.date, weight.value))
+                    seriesData.add(ValueDataEntry(weight.date, weight.value))
+                }
+
+                val series1: Line = cartesian.line(seriesData)
+                series1.name(cat.name)
+                series1.hovered().markers().enabled(true)
+                series1.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4.0)
+                series1.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(0.0)
+                    .offsetY(0.0)
+                cartesian.legend().fontColor("#111111")
+                anyChartView.setBackgroundColor("#FFFFFF")
+                anyChartView.setChart(cartesian)
+            }
         }
 
-        val series1: Line = cartesian.line(seriesData)
-        series1.name(cat.name)
-        series1.hovered().markers().enabled(true)
-        series1.hovered().markers()
-            .type(MarkerType.CIRCLE)
-            .size(4.0)
-        series1.tooltip()
-            .position("right")
-            .anchor(Anchor.LEFT_CENTER)
-            .offsetX(0.0)
-            .offsetY(0.0)
-        cartesian.legend().fontColor("#111111")
-        anyChartView.setBackgroundColor("#FFFFFF")
-        anyChartView.setChart(cartesian)
     }
 
     private fun setOnClickListeners() {
@@ -160,7 +168,14 @@ class CatCardsFragment : Fragment() {
             showEditDialog(INSURANCE, INS_NAME, INS_PHONE, INS_END_DATE, INS_SUM)
         }
         binding.imageViewWeightChartEditIcon.setOnClickListener {
+            Toast.makeText(context, "This feature is in development...", Toast.LENGTH_LONG).show()
 //            showEditDialogWeightChart()
+        }
+        binding.textViewInsurancePhoneNumber.setOnClickListener {
+            val intent = Intent(Intent.ACTION_DIAL).apply {
+                data = Uri.parse("tel: ${insurance.phone}")
+            }
+            startActivity(intent)
         }
     }
 
@@ -176,7 +191,11 @@ class CatCardsFragment : Fragment() {
         }
 
         dialogBinding.buttonInsertGalleryImage.setOnClickListener {
+            Toast.makeText(context, "This feature is in development...", Toast.LENGTH_LONG).show()
 //            selectImageIntent.launch("image/*")
+        }
+        dialogBinding.buttonInsertCameraImage.setOnClickListener {
+            Toast.makeText(context, "This feature is in development...", Toast.LENGTH_LONG).show()
         }
 
         MaterialAlertDialogBuilder(requireContext()).setTitle("Update name and image").setView(dialogBinding.root)

@@ -38,7 +38,6 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_view_general"
             style="@style/Card"
@@ -195,7 +194,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/text_view_medical_heading" />
 
-
                 <TextView
                     android:id="@+id/text_view_medical_heading"
                     style="@style/Text.Heading"
@@ -345,6 +343,8 @@
                 <TextView
                     android:id="@+id/text_view_insurance_phone_number"
                     style="@style/Text.Value"
+                    android:linksClickable="true"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="@id/text_view_insurance_name_value"
@@ -410,7 +410,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
                 <ImageView
                     android:id="@+id/image_view_weight_chart_edit_icon"
                     style="@style/Icon"
@@ -420,10 +419,30 @@
                     android:src="@drawable/ic_edit_24"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/image_view_weight_chart_icon"
+                    style="@style/Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/descr_insurance_icon"
+                    android:src="@drawable/ic_chart_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/text_view_weight_chart_heading" />
+
+                <TextView
+                    android:id="@+id/text_view_weight_chart_heading"
+                    style="@style/Text.Heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="@string/fragment_text_weight_chart"
+                    app:layout_constraintStart_toEndOf="@id/image_view_weight_chart_icon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
-
 
     </LinearLayout>
 

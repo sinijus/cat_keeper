@@ -26,4 +26,5 @@
     <string name="descr_general_edit_icon">General card edit icon</string>
     <string name="descr_insurance_edit_icon">Insurance card edit icon</string>
     <string name="descr_weight_edit_icon">Weight card edit icon</string>
+    <string name="fragment_text_weight_chart">Weight chart</string>
 </resources>
