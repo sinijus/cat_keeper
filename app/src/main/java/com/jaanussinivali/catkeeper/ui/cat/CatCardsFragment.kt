@@ -1,22 +1,14 @@
 package com.jaanussinivali.catkeeper.ui.cat
 
-
-import android.app.Activity
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.anychart.AnyChart
 import com.anychart.chart.common.dataentry.DataEntry
 import com.anychart.chart.common.dataentry.ValueDataEntry
@@ -28,13 +20,10 @@ import com.anychart.graphics.vector.Stroke
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jaanussinivali.catkeeper.data.CatDao
 import com.jaanussinivali.catkeeper.data.CatKeeperDatabase
-import com.jaanussinivali.catkeeper.data.entity.Cat
 import com.jaanussinivali.catkeeper.data.entity.General
 import com.jaanussinivali.catkeeper.data.entity.Insurance
 import com.jaanussinivali.catkeeper.data.entity.Medical
-import com.jaanussinivali.catkeeper.data.entity.Weight
 import com.jaanussinivali.catkeeper.databinding.DialogEditCatCardBinding
-import com.jaanussinivali.catkeeper.databinding.DialogEditImageAndNameBinding
 import com.jaanussinivali.catkeeper.databinding.FragmentCatCardsBinding
 import com.jaanussinivali.catkeeper.ui.cat.CatFragmentConstants.AGE
 import com.jaanussinivali.catkeeper.ui.cat.CatFragmentConstants.BIRTH_DATE
@@ -50,33 +39,21 @@ import com.jaanussinivali.catkeeper.ui.cat.CatFragmentConstants.MEDICAL
 import com.jaanussinivali.catkeeper.ui.cat.CatFragmentConstants.OFFICIAL_NAME
 import com.jaanussinivali.catkeeper.ui.cat.CatFragmentConstants.VACCINATION
 import com.jaanussinivali.catkeeper.ui.cat.CatFragmentConstants.WORM_MEDICINE
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
 import kotlin.concurrent.thread
-import kotlin.math.roundToInt
-
-const val REQUEST_IMAGE_CAPTURE = 1
-private var capturedImage: Bitmap? = null
-//val locationForPhotos: Uri = ...
-
 
 class CatCardsFragment : Fragment() {
-    private var fragmentTitle: String? = null
     private var fragmentNumber: Int = 0
     private lateinit var binding: FragmentCatCardsBinding
     private val catDao: CatDao by lazy { CatKeeperDatabase.getDatabase(requireContext()).getCatDao() }
-    private lateinit var cat: Cat
-    private lateinit var general: General
-    private lateinit var medical: Medical
-    private lateinit var insurance: Insurance
-    private lateinit var weights: List<Weight>
+
+    fun getFragmentNumber(): Int {
+        return fragmentNumber
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            fragmentTitle = it.getString(ARG_TITLE)
+//            fragmentTitle = it.getString(ARG_TITLE)
             fragmentNumber = it.getInt((ARG_POS)) + 1
         }
     }
@@ -90,32 +67,25 @@ class CatCardsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        binding.fragmentContainerViewImageCard = ImageCardFragment.newInstance(fragmentNumber)
+//        setSubFragments()
         displayFields()
         setOnClickListeners()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-            capturedImage = imageBitmap
-            binding.imageViewMainPic.setImageBitmap(capturedImage)
-        }
-        val imagePath = saveImageToInternalStorage(capturedImage!!)
-        saveImagePathToSharedPreferences(imagePath)
+    private fun setSubFragments() {
+        TODO("Not yet implemented")
     }
 
     private fun displayFields() {
         thread {
-            cat = catDao.getCat(fragmentNumber)
-            general = catDao.getGeneral(fragmentNumber)
-            medical = catDao.getMedical(fragmentNumber)
-            insurance = catDao.getInsurance(fragmentNumber)
-            weights = catDao.getWeights(fragmentNumber)
+            val cat = catDao.getCat(fragmentNumber)
+            val general = catDao.getGeneral(fragmentNumber)
+            val medical = catDao.getMedical(fragmentNumber)
+            val insurance = catDao.getInsurance(fragmentNumber)
+            val weights = catDao.getWeights(fragmentNumber)
 
             requireActivity().runOnUiThread {
-                binding.imageViewMainPic.setImageBitmap(loadImageFromInternalStorage())
-
                 binding.textViewOfficialNameValue.text = general.officialName
                 binding.textViewBirthDateValue.text = general.birthDate
                 binding.textViewAgeValue.text = general.age
@@ -134,27 +104,17 @@ class CatCardsFragment : Fragment() {
         }
     }
 
-    private fun loadImageFromInternalStorage(): Bitmap? {
-        val sharedPref = requireContext().getSharedPreferences("${cat.name}_image", Context.MODE_PRIVATE)
-        val imagePath = sharedPref.getString("image_path", null)
-        return if (imagePath != null) {
-            BitmapFactory.decodeFile(imagePath)
-        } else {
-            null
-        }
-    }
 
     private fun setAndDisplayWeightChart() {
         val anyChartView = binding.anyChartView
         thread {
             val cartesian = AnyChart.line()
-
+            val cat = catDao.getCat(fragmentNumber)
+            val weights = catDao.getWeights(fragmentNumber)
             requireActivity().runOnUiThread {
-//                cartesian.title("Weight")
+                cartesian.title("")
                 cartesian.crosshair().enabled(true)
-                cartesian.crosshair()
-                    .yLabel(true)
-                    .yStroke(null as Stroke?, null, null, null as String?, null as String?)
+                cartesian.crosshair().yLabel(true).yStroke(null as Stroke?, null, null, null as String?, null as String?)
                 cartesian.tooltip().positionMode(TooltipPositionMode.POINT)
                 cartesian.yAxis(0).title("kg")
                 cartesian.xAxis(0).labels().padding(0.0)
@@ -164,14 +124,8 @@ class CatCardsFragment : Fragment() {
                 val series1: Line = cartesian.line(seriesData)
                 series1.name(cat.name)
                 series1.hovered().markers().enabled(true)
-                series1.hovered().markers()
-                    .type(MarkerType.CIRCLE)
-                    .size(4.0)
-                series1.tooltip()
-                    .position("right")
-                    .anchor(Anchor.LEFT_CENTER)
-                    .offsetX(0.0)
-                    .offsetY(0.0)
+                series1.hovered().markers().type(MarkerType.CIRCLE).size(4.0)
+                series1.tooltip().position("right").anchor(Anchor.LEFT_CENTER).offsetX(0.0).offsetY(0.0)
                 cartesian.legend().fontColor("#111111")
                 anyChartView.setChart(cartesian)
             }
@@ -179,7 +133,19 @@ class CatCardsFragment : Fragment() {
     }
 
     private fun setOnClickListeners() {
-        binding.cardViewImage.setOnClickListener { showEditDialogNameAndPicture() }
+        thread {
+            val insurance = catDao.getInsurance(fragmentNumber)
+            requireActivity().runOnUiThread {
+                binding.textViewInsurancePhoneNumber.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_DIAL).apply {
+                        data = Uri.parse("tel: ${insurance.phone}")
+                    }
+                    startActivity(intent)
+                }
+            }
+        }
+
+
         binding.imageViewGeneralEditIcon.setOnClickListener {
             showEditDialog(GENERAL, OFFICIAL_NAME, BIRTH_DATE, AGE, BIRTH_PLACE)
         }
@@ -193,74 +159,9 @@ class CatCardsFragment : Fragment() {
             Toast.makeText(context, "This feature is in development...", Toast.LENGTH_LONG).show()
 //            showEditDialogWeightChart()
         }
-        binding.textViewInsurancePhoneNumber.setOnClickListener {
-            val intent = Intent(Intent.ACTION_DIAL).apply {
-                data = Uri.parse("tel: ${insurance.phone}")
-            }
-            startActivity(intent)
-        }
+
     }
 
-    private fun showEditDialogWeightChart() {
-        TODO("Not yet implemented")
-    }
-
-    private fun showEditDialogNameAndPicture() {
-        val dialogBinding = DialogEditImageAndNameBinding.inflate(requireActivity().layoutInflater)
-        dialogBinding.textInputNameLayout.hint = "Cat name (on tab view)"
-        thread {
-            requireActivity().runOnUiThread { dialogBinding.textInputNameValue.setText(cat.name) }
-        }
-
-        dialogBinding.buttonInsertCameraImage.setOnClickListener {
-            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            try {
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-            } catch (e: ActivityNotFoundException) {
-                // Display error state to the user.
-            }
-        }
-        dialogBinding.buttonInsertGalleryImage.setOnClickListener {
-            Toast.makeText(context, "This feature is in development...", Toast.LENGTH_LONG).show()
-//            selectImageIntent.launch("image/*")
-        }
-
-        MaterialAlertDialogBuilder(requireContext()).setTitle("Update name and image").setView(dialogBinding.root)
-            .setPositiveButton("Save") { _, _ ->
-                thread {
-                    catDao.update(
-                        Cat(id = fragmentNumber, name = dialogBinding.textInputNameValue.text.toString())
-                    )
-                }
-                displayFields()
-            }.setNegativeButton("Cancel") { dialog, _ ->
-                dialog.cancel()
-            }.show()
-    }
-
-    private fun saveImageToInternalStorage(bitmap: Bitmap): String {
-        val wrapper = ContextWrapper(requireContext())
-        var file = wrapper.getDir("images", Context.MODE_PRIVATE)
-        file = File(file, "${cat.name}_image.jpg")
-
-        try {
-            val stream: OutputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-            stream.flush()
-            stream.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-
-        return file.absolutePath
-    }
-
-    private fun saveImagePathToSharedPreferences(imagePath: String) {
-        val sharedPref = requireContext().getSharedPreferences("${cat.name}_image", Context.MODE_PRIVATE)
-        val editor = sharedPref.edit()
-        editor.putString("image_path", imagePath)
-        editor.apply()
-    }
 
     private fun showEditDialog(
         cardName: String, hintOne: String, hintTwo: String, hintThree: String, hintFour: String?
@@ -273,7 +174,7 @@ class CatCardsFragment : Fragment() {
         when (cardName) {
             GENERAL -> {
                 thread {
-                    general = catDao.getGeneral(fragmentNumber)
+                    val general = catDao.getGeneral(fragmentNumber)
                     requireActivity().runOnUiThread {
                         dialogBinding.textInputOneValue.setText(general.officialName)
                         dialogBinding.textInputTwoValue.setText(general.birthDate)
@@ -285,7 +186,7 @@ class CatCardsFragment : Fragment() {
 
             MEDICAL -> {
                 thread {
-                    medical = catDao.getMedical(fragmentNumber)
+                    val medical = catDao.getMedical(fragmentNumber)
                     requireActivity().runOnUiThread {
                         dialogBinding.textInputOneValue.setText(medical.lastDoctorVisit)
                         dialogBinding.textInputTwoValue.setText(medical.lastWormMedicine)
@@ -297,7 +198,7 @@ class CatCardsFragment : Fragment() {
 
             INSURANCE -> {
                 thread {
-                    insurance = catDao.getInsurance(fragmentNumber)
+                    val insurance = catDao.getInsurance(fragmentNumber)
                     requireActivity().runOnUiThread {
                         dialogBinding.textInputOneValue.setText(insurance.company)
                         dialogBinding.textInputTwoValue.setText(insurance.phone)
@@ -363,22 +264,16 @@ class CatCardsFragment : Fragment() {
     }
 
     companion object {
-        private const val ARG_TITLE = "title"
         private const val ARG_POS = "position"
-        fun newInstance(title: String, position: Int): CatCardsFragment {
+        fun newInstance(position: Int): CatCardsFragment {
             val fragment = CatCardsFragment()
             val args = Bundle()
-            args.putString(ARG_TITLE, title)
             args.putInt(ARG_POS, position)
             fragment.arguments = args
             return fragment
         }
     }
 }
-//
-//
-//private class CustomDataEntry internal constructor(x: String?, value: Number?) :
-//    ValueDataEntry(x, value) {
-//}
+
 
 

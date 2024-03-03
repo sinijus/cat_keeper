@@ -28,10 +28,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         database = CatKeeperDatabase.getDatabase(this)
-
         setFragments()
         binding.pager.adapter = PagerAdapter(this, catCardsFragments)
         setTabLayout()
+    }
+    private fun setFragments() {
+        catCardsFragments = listOf(
+            CatCardsFragment.newInstance( 0),
+            CatCardsFragment.newInstance(1)
+        )
     }
 
     private fun setTabLayout() {
@@ -39,13 +44,6 @@ class MainActivity : AppCompatActivity() {
             tab.text = "Cat ${position + 1}"
             tab.icon = AppCompatResources.getDrawable(this, R.drawable.ic_pets_24)
         }.attach()
-    }
-
-    private fun setFragments() {
-        catCardsFragments = listOf(
-            CatCardsFragment.newInstance("Fragment 1", 0),
-            CatCardsFragment.newInstance("Fragment 2", 1)
-        )
     }
 
     inner class PagerAdapter(
