@@ -67,14 +67,8 @@ class CatCardsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.fragmentContainerViewImageCard = ImageCardFragment.newInstance(fragmentNumber)
-//        setSubFragments()
         displayFields()
         setOnClickListeners()
-    }
-
-    private fun setSubFragments() {
-        TODO("Not yet implemented")
     }
 
     private fun displayFields() {

@@ -74,10 +74,14 @@ class ImageCardFragment : Fragment() {
     private fun showEditDialogNameAndPicture() {
         val dialogBinding = DialogEditImageAndNameBinding.inflate(requireActivity().layoutInflater)
         dialogBinding.textInputNameLayout.hint = "Cat name (on tab view)"
+
         thread {
             val cat = catDao.getCat(parentFragmentNumber)
-            requireActivity().runOnUiThread { dialogBinding.textInputNameValue.setText(cat.name) }
+            requireActivity().runOnUiThread {
+                dialogBinding.textInputNameValue.setText(cat.name)
+            }
         }
+
         dialogBinding.buttonInsertCameraImage.setOnClickListener {
             val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             try {
@@ -85,23 +89,25 @@ class ImageCardFragment : Fragment() {
             } catch (e: ActivityNotFoundException) {
                 Toast.makeText(context, "Image capture error!", Toast.LENGTH_LONG).show()
             }
-            dialogBinding.buttonInsertGalleryImage.setOnClickListener {
-                Toast.makeText(context, "This feature is in development...", Toast.LENGTH_LONG).show()
-            }
-
-            MaterialAlertDialogBuilder(requireContext()).setTitle("Update name and image").setView(dialogBinding.root)
-                .setPositiveButton("Save") { _, _ ->
-                    thread {
-                        catDao.update(
-                            Cat(id = parentFragmentNumber, name = dialogBinding.textInputNameValue.text.toString())
-                        )
-                    }
-                    displayImageCard()
-                }.setNegativeButton("Cancel") { dialog, _ ->
-                    dialog.cancel()
-                }.show()
         }
+
+        dialogBinding.buttonInsertGalleryImage.setOnClickListener {
+            Toast.makeText(context, "This feature is in development...", Toast.LENGTH_LONG).show()
+        }
+
+        MaterialAlertDialogBuilder(requireContext()).setTitle("Update name and image").setView(dialogBinding.root)
+            .setPositiveButton("Save") { _, _ ->
+                thread {
+                    catDao.update(
+                        Cat(id = parentFragmentNumber, name = dialogBinding.textInputNameValue.text.toString())
+                    )
+                }
+                displayImageCard()
+            }.setNegativeButton("Cancel") { dialog, _ ->
+                dialog.cancel()
+            }.show()
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -136,15 +142,4 @@ class ImageCardFragment : Fragment() {
         editor.putString("image_path", imagePath)
         editor.apply()
     }
-
-//    companion object {
-//        private const val CAT_ID = "cat_id"
-//        fun newInstance(catId: Int): ImageCardFragment {
-//            val fragment = ImageCardFragment()
-//            val args = Bundle()
-//            args.putInt(CAT_ID, catId)
-//            fragment.arguments = args
-//            return fragment
-//        }
-//    }
 }
