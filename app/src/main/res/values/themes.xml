@@ -3,7 +3,7 @@
     <style name="Base.Theme.CatKeeper" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/teal_600</item>
         <item name="colorPrimaryVariant">@color/teal_800</item>
-        <item name="cardBackgroundColor">@color/teal_600_transparent</item>
+        <item name="cardBackgroundColor">@color/orange_800_transparent</item>
 
 <!--        <item name="colorOnSurface">@color/brown_900</item>-->
 <!--        <item name="colorOnSurfaceVariant">@color/brown_600</item>-->

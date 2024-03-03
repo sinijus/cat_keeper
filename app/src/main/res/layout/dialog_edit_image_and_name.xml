@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:padding="12dp"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:orientation="vertical"
+    android:padding="12dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_name_layout"
@@ -22,15 +22,15 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_insert_camera_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_edit_image_button_text"
-        android:id="@+id/button_insert_gallery_image" />
+        android:text="@string/dialog_edit_image_button_text_camera" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_insert_gallery_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_edit_image_button_text"
-        android:id="@+id/button_insert_camera_image" />
+        android:text="@string/dialog_edit_image_button_text_gallery" />
 
 </LinearLayout>

@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <style name="Fragment">
+        <item name="background">@color/orange_100</item>
+    </style>
     <style name="Icon">
         <item name="tint">?attr/colorPrimaryVariant</item>
     </style>
 
     <style name="Card">
-        <item name="strokeColor">?attr/colorPrimaryContainer</item>
-        <item name="strokeWidth">1dp</item>
-        <item name="backgroundColor">?attr/cardBackgroundColor</item>
+        <item name="strokeColor">@color/teal_100</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="cardBackgroundColor">@color/teal_50</item>
     </style>
 
     <style name="Text">
@@ -22,6 +26,10 @@
     <style name="Text.Value">
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+    <style name="Text.Value.Link">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/orange_800</item>
     </style>
     <style name="Text.ItemName">
         <item name="android:textSize">17sp</item>

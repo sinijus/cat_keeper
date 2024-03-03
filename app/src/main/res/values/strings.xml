@@ -27,4 +27,7 @@
     <string name="descr_insurance_edit_icon">Insurance card edit icon</string>
     <string name="descr_weight_edit_icon">Weight card edit icon</string>
     <string name="fragment_text_weight_chart">Weight chart</string>
+    <string name="dialog_edit_image_button_text_camera">Insert image from Camera</string>
+    <string name="dialog_edit_image_button_text_gallery">Insert image from Gallery</string>
+    <string name="descr_insert_picture_icon">Insert picture icon</string>
 </resources>

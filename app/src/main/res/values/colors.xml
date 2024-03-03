@@ -2,8 +2,15 @@
 <resources>
     <color name="white">#FFFFFF</color>
     <color name="black">#111111</color>
-    <color name="teal_200">#FFD54F</color>
-    <color name="teal_600_transparent">#AA00897B</color>
+    <color name="teal_200">#80CBC4</color>
+    <color name="teal_100">#B2DFDB</color>
+    <color name="teal_50">#E0F2F1</color>
+    <color name="orange_50">#FFF3E0</color>
+    <color name="orange_100">#FFE0B2</color>
+    <color name="orange_800">#EF6C00</color>
+    <color name="amber_100">#FFECB3</color>
+
+    <color name="orange_800_transparent">#2CEF6C00</color>
     <color name="teal_600">#00897B</color>
     <color name="teal_800">#00695C</color>
 </resources>

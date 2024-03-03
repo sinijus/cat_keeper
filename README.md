@@ -4,16 +4,14 @@
     Run it with Android Studio using AVD with API version 34 (supported 24-34).
 
     TODO:
-        *) chart data insert
-        *) add calling function to insurance
+        *) image insert from Photos and Camera
         *) change date input forms
+        *) when saving data in dialog, udpdate only changed card view / fix crash
         *) calculate age from current date and birth date
         *) validate all input fields
-        *) update / style chart
         *) name tab item with cat name from database
-        *) image insert from Photos and Camera
-        *) restructure / decompose fragment_cat_cards
-        *) insert/delete tabs
+            *) restructure / decompose fragment_cat_cards
+            *) insert/delete tabs
 
     Credits:
     app image icon template from: https://www.flaticon.com/free-icons/cat

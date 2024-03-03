@@ -48,7 +48,7 @@ abstract class CatKeeperDatabase : RoomDatabase() {
                         )
                         catDao?.insert(
                             Insurance(
-                                catId = 1, company = "", phone = "", validUntil = "", sum = ""
+                                catId = 1, company = "", phone = "6667788", validUntil = "", sum = ""
                             )
                         )
                         catDao?.insert(

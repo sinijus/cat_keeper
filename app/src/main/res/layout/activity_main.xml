@@ -12,14 +12,14 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent">
 
-<!--        <com.google.android.material.appbar.MaterialToolbar-->
-<!--            android:id="@+id/toolbar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:title="Cat Keeper"-->
-<!--            app:titleCentered="true">-->
+        <!--        <com.google.android.material.appbar.MaterialToolbar-->
+        <!--            android:id="@+id/toolbar"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:title="Cat Keeper"-->
+        <!--            app:titleCentered="true">-->
 
-<!--        </com.google.android.material.appbar.MaterialToolbar>-->
+        <!--        </com.google.android.material.appbar.MaterialToolbar>-->
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"

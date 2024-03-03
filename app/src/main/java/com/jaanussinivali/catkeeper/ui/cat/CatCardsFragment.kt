@@ -1,9 +1,14 @@
 package com.jaanussinivali.catkeeper.ui.cat
 
 
+import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +50,10 @@ import com.jaanussinivali.catkeeper.ui.cat.CatFragmentConstants.WORM_MEDICINE
 import kotlin.concurrent.thread
 import kotlin.math.roundToInt
 
+const val REQUEST_IMAGE_CAPTURE = 1
+private var capturedImage: Bitmap? = null
+//val locationForPhotos: Uri = ...
+
 
 class CatCardsFragment : Fragment() {
     private var fragmentTitle: String? = null
@@ -56,13 +65,6 @@ class CatCardsFragment : Fragment() {
     private lateinit var medical: Medical
     private lateinit var insurance: Insurance
     private lateinit var weights: List<Weight>
-
-
-//    private val selectImageIntent by lazy {
-//        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-//            binding.imageViewMainPic.setImageURI(uri)
-//        }
-//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +85,15 @@ class CatCardsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         displayFields()
         setOnClickListeners()
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            capturedImage = imageBitmap
+            binding.imageViewMainPic.setImageBitmap(capturedImage)
+            binding.imageViewMainPic.visibility = View.VISIBLE
+        }
     }
 
     private fun displayFields() {
@@ -107,8 +118,7 @@ class CatCardsFragment : Fragment() {
                 binding.textViewInsurancePhoneNumber.text = insurance.phone
                 binding.textViewInsuranceValidUntilDate.text = insurance.validUntil
                 binding.textViewInsuranceSumValue.text = insurance.sum
-                if (weights.isNotEmpty()) setAndDisplayWeightChart()
-                else binding.anyChartView.visibility = View.GONE
+                if (weights.isNotEmpty()) setAndDisplayWeightChart() else binding.anyChartView.visibility = View.GONE
             }
         }
     }
@@ -128,14 +138,7 @@ class CatCardsFragment : Fragment() {
                 cartesian.yAxis(0).title("kg")
                 cartesian.xAxis(0).labels().padding(0.0)
                 val seriesData: MutableList<DataEntry> = ArrayList()
-                for (weight in weights) {
-//            if (weight.catId == null || weight.date == null || weight.value == null) {
-////                seriesData.add(ValueDataEntry("", 0))
-//                binding.cardViewChart.visibility = View.GONE
-//                break
-//            } else
-                    seriesData.add(ValueDataEntry(weight.date, weight.value))
-                }
+                for (weight in weights) seriesData.add(ValueDataEntry(weight.date, weight.value))
 
                 val series1: Line = cartesian.line(seriesData)
                 series1.name(cat.name)
@@ -149,7 +152,8 @@ class CatCardsFragment : Fragment() {
                     .offsetX(0.0)
                     .offsetY(0.0)
                 cartesian.legend().fontColor("#111111")
-                anyChartView.setBackgroundColor("#FFFFFF")
+//                cartesian.background("#2CEF6C00")
+//                anyChartView.setBackgroundColor("#2CEF6C00")
                 anyChartView.setChart(cartesian)
             }
         }
@@ -190,12 +194,17 @@ class CatCardsFragment : Fragment() {
             requireActivity().runOnUiThread { dialogBinding.textInputNameValue.setText(cat.name) }
         }
 
+        dialogBinding.buttonInsertCameraImage.setOnClickListener {
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            try {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+            } catch (e: ActivityNotFoundException) {
+                // Display error state to the user.
+            }
+        }
         dialogBinding.buttonInsertGalleryImage.setOnClickListener {
             Toast.makeText(context, "This feature is in development...", Toast.LENGTH_LONG).show()
 //            selectImageIntent.launch("image/*")
-        }
-        dialogBinding.buttonInsertCameraImage.setOnClickListener {
-            Toast.makeText(context, "This feature is in development...", Toast.LENGTH_LONG).show()
         }
 
         MaterialAlertDialogBuilder(requireContext()).setTitle("Update name and image").setView(dialogBinding.root)
@@ -306,12 +315,6 @@ class CatCardsFragment : Fragment() {
                         displayFields()
                     }
                 }
-//                val general = General(
-//                    officialName = "",
-//                    birthDate = "",
-//                    age = 2,
-//                    birthPlace = ""
-//                )
             }.setNegativeButton("Cancel") { dialog, _ ->
                 dialog.cancel()
             }.show()

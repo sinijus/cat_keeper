@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    style="@style/Fragment"
     android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+    android:orientation="vertical"
         android:padding="12dp">
 
         <com.google.android.material.card.MaterialCardView
@@ -18,11 +19,22 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="0dp">
+
+                <ImageView
+                    android:id="@+id/image_view_insert_icon"
+                    style="@style/Icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:contentDescription="@string/descr_insert_picture_icon"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_image_search_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/image_view_main_pic"
@@ -30,11 +42,10 @@
                     android:layout_height="200dp"
                     android:contentDescription="@string/descr_cat_main_profile_picture"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/img_tips_1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -43,7 +54,8 @@
             style="@style/Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="12dp"
+            >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -342,11 +354,10 @@
 
                 <TextView
                     android:id="@+id/text_view_insurance_phone_number"
-                    style="@style/Text.Value"
-                    android:linksClickable="true"
-
+                    style="@style/Text.Value.Link"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:linksClickable="true"
                     app:layout_constraintStart_toStartOf="@id/text_view_insurance_name_value"
                     app:layout_constraintTop_toBottomOf="@id/text_view_insurance_name_value"
                     tools:text="6777888" />
@@ -395,6 +406,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_view_chart"
+            style="@style/Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -403,12 +415,21 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp">
 
-                <com.anychart.AnyChartView
-                    android:id="@+id/any_chart_view"
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:strokeWidth="0dp"
+
+                    android:layout_height="match_parent">
+                    <com.anychart.AnyChartView
+                        android:id="@+id/any_chart_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+
 
                 <ImageView
                     android:id="@+id/image_view_weight_chart_edit_icon"
