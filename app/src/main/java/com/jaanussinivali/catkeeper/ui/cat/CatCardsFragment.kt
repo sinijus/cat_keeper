@@ -6,17 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import com.anychart.AnyChart
-import com.anychart.chart.common.dataentry.DataEntry
-import com.anychart.chart.common.dataentry.ValueDataEntry
-import com.anychart.core.cartesian.series.Line
-import com.anychart.enums.Anchor
-import com.anychart.enums.MarkerType
-import com.anychart.enums.TooltipPositionMode
-import com.anychart.graphics.vector.Stroke
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jaanussinivali.catkeeper.data.CatDao
 import com.jaanussinivali.catkeeper.data.CatKeeperDatabase

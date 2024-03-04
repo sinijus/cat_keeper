@@ -13,7 +13,6 @@ object CatFragmentConstants {
     const val DOCTOR_VISIT = "Doctor Visit Date"
     const val WORM_MEDICINE = "Worm Medicine Date"
     const val VACCINATION = "Vaccination Date"
-    const val WEIGHT = "Weight"
 
     const val INS_NAME = "Insurance Name"
     const val INS_PHONE = "Insurance Phone"

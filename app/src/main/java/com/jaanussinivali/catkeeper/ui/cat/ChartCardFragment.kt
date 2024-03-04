@@ -1,15 +1,11 @@
 package com.jaanussinivali.catkeeper.ui.cat
 
-import android.icu.util.Calendar
-import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
 import android.widget.Toast
-import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import com.anychart.AnyChart
 import com.anychart.chart.common.dataentry.DataEntry
 import com.anychart.chart.common.dataentry.ValueDataEntry
@@ -94,12 +90,8 @@ class ChartCardFragment : Fragment() {
     private fun showEditDialogWeightChart() {
         val dialogBinding = DialogEditChartCardBinding.inflate(requireActivity().layoutInflater)
         dialogBinding.textInputWeightLayout.hint = "Weight in kg"
-
-
-
         dialogBinding.buttonDeleteWeightRecords.setOnClickListener {
             Toast.makeText(context, "This feature is in development...", Toast.LENGTH_LONG).show()
-
         }
         MaterialAlertDialogBuilder(requireContext()).setTitle("Add weight point entry").setView(dialogBinding.root)
             .setPositiveButton("Save") { _, _ ->
