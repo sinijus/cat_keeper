@@ -35,13 +35,6 @@ class ImageCardFragment : Fragment() {
     private val catDao: CatDao by lazy { CatKeeperDatabase.getDatabase(requireContext()).getCatDao() }
     private var capturedImage: Bitmap? = null
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            catId = it.getInt(CAT_ID)
-//        }
-//    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentImageCardBinding.inflate(inflater, container, false)
         return binding.root
@@ -49,22 +42,20 @@ class ImageCardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getParentFragmentNumber()
         displayImageCard()
         setCardOnClickListener()
-        val parentFragment = parentFragment as CatCardsFragment
-        parentFragmentNumber = parentFragment.getFragmentNumber()
     }
 
+    private fun getParentFragmentNumber() {
+        val parentFragment = parentFragment as CatCardsFragment
+        parentFragmentNumber = parentFragment.getFragmentNumber()    }
+
     private fun displayImageCard() {
-        thread {
-            val cat = catDao.getCat(parentFragmentNumber)
-            requireActivity().runOnUiThread {
-                val sharedPref = requireContext().getSharedPreferences("${parentFragmentNumber}_image", Context.MODE_PRIVATE)
-                val imagePath = sharedPref.getString("image_path", null)
-                val imageBitmap = if (imagePath != null) BitmapFactory.decodeFile(imagePath) else null
-                binding.imageViewMainPic.setImageBitmap(imageBitmap)
-            }
-        }
+        val sharedPref = requireContext().getSharedPreferences("${parentFragmentNumber}_image", Context.MODE_PRIVATE)
+        val imagePath = sharedPref.getString("image_path", null)
+        val imageBitmap = if (imagePath != null) BitmapFactory.decodeFile(imagePath) else null
+        binding.imageViewMainPic.setImageBitmap(imageBitmap)
     }
 
     private fun setCardOnClickListener() {
@@ -74,7 +65,6 @@ class ImageCardFragment : Fragment() {
     private fun showEditDialogNameAndPicture() {
         val dialogBinding = DialogEditImageAndNameBinding.inflate(requireActivity().layoutInflater)
         dialogBinding.textInputNameLayout.hint = "Cat name (on tab view)"
-
         thread {
             val cat = catDao.getCat(parentFragmentNumber)
             requireActivity().runOnUiThread {
@@ -115,9 +105,13 @@ class ImageCardFragment : Fragment() {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             capturedImage = imageBitmap
             binding.imageViewMainPic.setImageBitmap(capturedImage)
+            val imagePath = saveImageToInternalStorage(capturedImage!!)
+            saveImagePathToSharedPreferences(imagePath)
+        } else {
+            Toast.makeText(context, "Image capture cancelled!", Toast.LENGTH_LONG).show()
+
         }
-        val imagePath = saveImageToInternalStorage(capturedImage!!)
-        saveImagePathToSharedPreferences(imagePath)
+
     }
 
     private fun saveImageToInternalStorage(bitmap: Bitmap): String {

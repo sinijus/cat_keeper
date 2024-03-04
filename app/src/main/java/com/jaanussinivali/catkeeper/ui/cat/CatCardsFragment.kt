@@ -53,7 +53,6 @@ class CatCardsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-//            fragmentTitle = it.getString(ARG_TITLE)
             fragmentNumber = it.getInt((ARG_POS)) + 1
         }
     }
@@ -73,11 +72,9 @@ class CatCardsFragment : Fragment() {
 
     private fun displayFields() {
         thread {
-            val cat = catDao.getCat(fragmentNumber)
             val general = catDao.getGeneral(fragmentNumber)
             val medical = catDao.getMedical(fragmentNumber)
             val insurance = catDao.getInsurance(fragmentNumber)
-            val weights = catDao.getWeights(fragmentNumber)
 
             requireActivity().runOnUiThread {
                 binding.textViewOfficialNameValue.text = general.officialName
@@ -93,35 +90,6 @@ class CatCardsFragment : Fragment() {
                 binding.textViewInsurancePhoneNumber.text = insurance.phone
                 binding.textViewInsuranceValidUntilDate.text = insurance.validUntil
                 binding.textViewInsuranceSumValue.text = insurance.sum
-                if (weights.isNotEmpty()) setAndDisplayWeightChart() else binding.anyChartView.visibility = View.GONE
-            }
-        }
-    }
-
-
-    private fun setAndDisplayWeightChart() {
-        val anyChartView = binding.anyChartView
-        thread {
-            val cartesian = AnyChart.line()
-            val cat = catDao.getCat(fragmentNumber)
-            val weights = catDao.getWeights(fragmentNumber)
-            requireActivity().runOnUiThread {
-                cartesian.title("")
-                cartesian.crosshair().enabled(true)
-                cartesian.crosshair().yLabel(true).yStroke(null as Stroke?, null, null, null as String?, null as String?)
-                cartesian.tooltip().positionMode(TooltipPositionMode.POINT)
-                cartesian.yAxis(0).title("kg")
-                cartesian.xAxis(0).labels().padding(0.0)
-                val seriesData: MutableList<DataEntry> = ArrayList()
-                for (weight in weights) seriesData.add(ValueDataEntry(weight.date, weight.value))
-
-                val series1: Line = cartesian.line(seriesData)
-                series1.name(cat.name)
-                series1.hovered().markers().enabled(true)
-                series1.hovered().markers().type(MarkerType.CIRCLE).size(4.0)
-                series1.tooltip().position("right").anchor(Anchor.LEFT_CENTER).offsetX(0.0).offsetY(0.0)
-                cartesian.legend().fontColor("#111111")
-                anyChartView.setChart(cartesian)
             }
         }
     }
@@ -139,7 +107,6 @@ class CatCardsFragment : Fragment() {
             }
         }
 
-
         binding.imageViewGeneralEditIcon.setOnClickListener {
             showEditDialog(GENERAL, OFFICIAL_NAME, BIRTH_DATE, AGE, BIRTH_PLACE)
         }
@@ -149,13 +116,7 @@ class CatCardsFragment : Fragment() {
         binding.imageViewInsuranceEditIcon.setOnClickListener {
             showEditDialog(INSURANCE, INS_NAME, INS_PHONE, INS_END_DATE, INS_SUM)
         }
-        binding.imageViewWeightChartEditIcon.setOnClickListener {
-            Toast.makeText(context, "This feature is in development...", Toast.LENGTH_LONG).show()
-//            showEditDialogWeightChart()
-        }
-
     }
-
 
     private fun showEditDialog(
         cardName: String, hintOne: String, hintTwo: String, hintThree: String, hintFour: String?

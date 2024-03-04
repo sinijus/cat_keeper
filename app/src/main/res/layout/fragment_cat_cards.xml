@@ -2,22 +2,22 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     style="@style/Fragment"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-    android:orientation="vertical"
+        android:orientation="vertical"
         android:padding="12dp">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_container_view_image_card"
-            android:layout_width="match_parent"
-            android:layout_marginBottom="12dp"
             android:name="com.jaanussinivali.catkeeper.ui.cat.ImageCardFragment"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
             tools:layout="@layout/fragment_image_card" />
 
         <com.google.android.material.card.MaterialCardView
@@ -25,8 +25,7 @@
             style="@style/Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            >
+            android:layout_marginBottom="12dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -375,66 +374,12 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_view_chart"
-            style="@style/Card"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container_view_chart_card"
+            android:name="com.jaanussinivali.catkeeper.ui.cat.ChartCardFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    app:strokeWidth="0dp"
-
-                    android:layout_height="match_parent">
-                    <com.anychart.AnyChartView
-                        android:id="@+id/any_chart_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-
-
-                <ImageView
-                    android:id="@+id/image_view_weight_chart_edit_icon"
-                    style="@style/Icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/descr_weight_edit_icon"
-                    android:src="@drawable/ic_edit_24"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/image_view_weight_chart_icon"
-                    style="@style/Icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/descr_insurance_icon"
-                    android:src="@drawable/ic_chart_24"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/text_view_weight_chart_heading" />
-
-                <TextView
-                    android:id="@+id/text_view_weight_chart_heading"
-                    style="@style/Text.Heading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:text="@string/fragment_text_weight_chart"
-                    app:layout_constraintStart_toEndOf="@id/image_view_weight_chart_icon"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.google.android.material.card.MaterialCardView>
+            android:layout_height="wrap_content"
+            tools:layout="@layout/fragment_chart_card" />
 
     </LinearLayout>
 
